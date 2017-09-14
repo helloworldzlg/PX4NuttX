@@ -819,6 +819,75 @@ void stm32_dmastop(DMA_HANDLE handle)
 }
 
 /****************************************************************************
+ * Name: stm32_dmagetcurrentmemtarget
+ *
+ * Description:
+ *   
+ *
+ * Assumptions:
+ *   - DMA handle allocated by stm32_dmachannel()
+ *
+ ****************************************************************************/
+
+uint32_t stm32_dmagetcurrentmemtarget(DMA_HANDLE handle)
+{
+  struct stm32_dma_s *dmast = (struct stm32_dma_s *)handle;
+  uint32_t mem_target;
+
+  mem_target = dmast_getreg(dmast, STM32_DMA_SCR_OFFSET) & DMA_SCR_CT;
+  (mem_target != 0) ? (mem_target = 1) : (mem_target = 0);
+    
+  return mem_target;
+}
+
+/****************************************************************************
+ * Name: stm32_dmasetbuffer_1
+ *
+ * Description:
+ *   
+ *
+ * Assumptions:
+ *   - DMA handle allocated by stm32_dmachannel()
+ *
+ ****************************************************************************/
+
+void stm32_dmasetbuffer_1(DMA_HANDLE handle, uint32_t memAddr)
+{
+  struct stm32_dma_s *dmast = (struct stm32_dma_s *)handle;
+
+  dmast_putreg(dmast, STM32_DMA_SM1AR_OFFSET, memAddr);
+    
+  return;
+}
+
+/****************************************************************************
+ * Name: stm32_dmamemtargetconfig
+ *
+ * Description:
+ *   
+ *
+ * Assumptions:
+ *   - DMA handle allocated by stm32_dmachannel()
+ *
+ ****************************************************************************/
+
+void stm32_dmamemtargetconfig(DMA_HANDLE handle, uint32_t mem_addr, 
+                                        uint32_t mem_target)
+{
+    struct stm32_dma_s *dmast = (struct stm32_dma_s *)handle;
+    
+    if (mem_target != 0)
+    {
+        dmast_putreg(dmast, STM32_DMA_SM1AR_OFFSET, mem_addr);
+    }
+    else
+    {
+        dmast_putreg(dmast, STM32_DMA_SM0AR_OFFSET, mem_addr);
+    }
+    return;
+}
+
+/****************************************************************************
  * Name: stm32_dmaresidual
  *
  * Description:

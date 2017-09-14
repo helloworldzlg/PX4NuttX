@@ -181,3 +181,5 @@ endif
 ifeq ($(CONFIG_DEBUG),y)
 CHIP_CSRCS += stm32_dumpgpio.c
 endif
+
+CHIP_CSRCS += IOI2C.c ov7740.c settings.c stm32f4xx_i2c.c stm32f4xx_dcmi.c stm32f4xx_rcc.c px4_dcmi.c stm32f4xx_gpio.c
